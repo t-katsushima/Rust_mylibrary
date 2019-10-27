@@ -20,6 +20,6 @@ fn main() {
     let a: i32 = read();
     let b: i32 = read();
     let ans = max(0, a - b*2);
-        
+    
     println!("{}", ans);
 }
