@@ -4,3 +4,5 @@ ar.len();
 ar.first();
 ar[1];
 ar.last();
+
+a.iter() // イテレータ化？
