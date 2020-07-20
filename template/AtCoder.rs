@@ -6,10 +6,12 @@ use std::collections::*;
 use std::cmp::*;
 
 #[fastout]
+
+
 fn main() {
     input!{
         // n: usize,
-        // v: [i32; n],
+        // v: [isize; n],
     }
 
     let ans = 42;
