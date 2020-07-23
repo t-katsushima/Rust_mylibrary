@@ -1,4 +1,4 @@
-let iter = [0; 100].iter();
+let iter: Iterator<usize> = [0; 100].iter();
 
 iter.sum::<T>;
 iter.filter

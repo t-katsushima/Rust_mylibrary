@@ -5,9 +5,8 @@ use std::collections::*;
 #[allow(unused_imports)]
 use std::cmp::*;
 
+
 #[fastout]
-
-
 fn main() {
     input!{
         // n: usize,

@@ -8,6 +8,9 @@ ar.first();
 ar.last();
 
 a.iter() // イテレータ化？
+a.into_iter() // イテレータ化？
+
+a.swap(1, 2) // -> unit
 
 for x in &ar {
     
