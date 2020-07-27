@@ -1,14 +1,13 @@
-use proconio::{input, fastout};
+use proconio::{fastout, input};
 
-#[allow(unused_imports)]
-use std::collections::*;
 #[allow(unused_imports)]
 use std::cmp::*;
-
+#[allow(unused_imports)]
+use std::collections::*;
 
 #[fastout]
 fn main() {
-    input!{
+    input! {
         // n: usize,
         // v: [isize; n],
     }
