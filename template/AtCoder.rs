@@ -12,6 +12,6 @@ fn main() {
         // v: [isize; n],
     }
 
-    let mut ans = 42;
+    let ans = 42;
     println!("{}", ans);
 }
