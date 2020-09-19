@@ -4,3 +4,4 @@ iter.sum::<T>;
 iter.filter
 iter.count()
 iter.next()
+iter.enumerate() // <(usize, T)>
