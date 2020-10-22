@@ -7,6 +7,9 @@ ar.len();
 ar.first();
 ar.last();
 
+a.sort();
+a.reverse();
+
 a.iter() // イテレータ化？
 a.into_iter() // イテレータ化？
 

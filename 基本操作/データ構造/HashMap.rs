@@ -9,6 +9,11 @@ a.contains_key("Blue")
 assert_eq!(map["lisp"], 1958); // [ ] でアクセス可能。存在しないキーだとパニック
 assert_eq!(map.get("c"), Some(&1972)); // get()を使うと、キーが存在する場合はSomeを、
 
+// 更新
+let count = map.entry(key).or_insert(0);
+*count += 1;
+
+// イテレート
 for (k, v) in &map {
     println!("{} was born in {}", k, v);
 }
