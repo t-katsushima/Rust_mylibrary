@@ -12,7 +12,7 @@ s.chars().rev().collect::<String>()
 
 format!("{}-{}", "hoge", "fuga") // "hoge-fuga"
 
-
+// 文字列の拡張
 let mut t = "fuga";
 t.push_str("piyo");
 t.push('p');
