@@ -1,8 +1,10 @@
-// cf. https://img.atcoder.jp/intro-heuristics/editorial.pdf
+// cf. https://shindannin.hatenadiary.com/entry/20121224/1356364040
 // 最大化問題の場合
 fn annealing() -> Vec<usize> {
-    const T0: f64 = 2e3; // 開始温度
-    const T1: f64 = 6e2; // 終了温度
+    // 開始温度(スコア差の最大値にすると良さそう。開始直後に35%くらいの確率でこの差量を受け入れる)
+    let start_temp: f64 = 2000.0;
+    // 終了温度(終盤に悪化遷移を35%程度許容できる値にすると良さそう)
+    let end_temp: f64 = 600.0;
 
     const TL: f64 = 1.95; // 焼きなまし時間(秒)
 
@@ -10,17 +12,18 @@ fn annealing() -> Vec<usize> {
     let mut state = State::new(&input, t);
 
     #[allow(non_snake_case)]
-    let mut T = T0;
+    let mut temp;
     // 初期値をセット
     let mut best_score = calc_score(res);
     let mut best_out = res.clone(); // res がベクターの場合を例とする
 
     loop {
-        let t = get_time(time) / TL;
-        if t >= 1.0 {
+        let spent_time_rate = get_time(time) / TL; // (0.0, 1.0)
+        if spent_time_rate >= 1.0 {
             break;
         }
-        T = T0.powf(1.0 - t) * T1.powf(t); // T0^(1.0-t) * T1^t
+        // 温度。段々下がっていく。
+        temp = start_temp + (end_temp - start_temp) * spent_time_rate;
 
         for _ in 0..100 {
             let old_score = calc_score(res);
@@ -30,8 +33,9 @@ fn annealing() -> Vec<usize> {
             let next_score = calc_score(res);
 
             // スコアが悪化して、かつ `e^(score差 / T)` の確率にヒットしなかったら
+            // `score差` が負の数なのが肝
             if old_score > next_score
-                && !rand.gen_bool(f64::exp((state.score - old_score) as f64 / T))
+                && !rand.gen_bool(f64::exp((next_score - old_score) as f64 / temp))
             {
                 /* 変更の巻き戻し */
             }
