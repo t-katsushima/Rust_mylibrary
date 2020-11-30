@@ -1,5 +1,5 @@
 #[allow(unused_imports)]
-use proconio::marker::*;
+use proconio::marker::Chars;
 use proconio::{fastout, input};
 
 #[allow(unused_imports)]
@@ -15,5 +15,6 @@ fn main() {
     }
 
     let ans = 42;
+
     println!("{}", ans);
 }

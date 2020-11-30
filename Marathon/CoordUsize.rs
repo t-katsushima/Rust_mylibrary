@@ -22,19 +22,19 @@ impl Coord {
     }
 
     fn in_field(pos: (isize, isize)) -> bool {
-        (0 <= pos.0 && pos.0 < HW as isize) && (0 <= pos.1 && pos.1 < HW as isize)
+        (0 <= pos.0 && pos.0 < W as isize) && (0 <= pos.1 && pos.1 < H as isize)
     }
 
-    fn to_pair(self) -> (usize, usize) {
+    fn to_pair(&self) -> (usize, usize) {
         (self.x, self.y)
     }
 
-    fn to_isize_pair(self) -> (isize, isize) {
+    fn to_isize_pair(&self) -> (isize, isize) {
         (self.x as isize, self.y as isize)
     }
 
     // マンハッタン距離
-    fn distance(self, that: Coord) -> usize {
+    fn distance(&self, that: Coord) -> usize {
         let dist_x = max(self.x, that.x) - min(self.x, that.x);
         let dist_y = max(self.y, that.y) - min(self.y, that.y);
         dist_x + dist_y
@@ -54,6 +54,10 @@ impl Coord {
 
     fn access_matrix<T>(self, mat: &Vec<Vec<T>>) -> &T {
         &mat[self.y][self.x]
+    }
+
+    fn set_matrix<T: Clone>(self, mat: &mut Vec<Vec<T>>, e: T) {
+        mat[self.y][self.x] = e.clone()
     }
 
 }
