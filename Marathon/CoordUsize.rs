@@ -1,7 +1,7 @@
 const H: usize = unimplemented!();
 const W: usize = unimplemented!();
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 struct Coord {
     x: usize,
     y: usize,
@@ -40,7 +40,7 @@ impl Coord {
         dist_x + dist_y
     }
 
-    fn mk_4dir(self) -> Vec<Coord> {
+    fn mk_4dir(&self) -> Vec<Coord> {
         let (ix, iy) = self.to_isize_pair();
         let delta = [(-1, 0), (1, 0), (0, -1), (0, 1)];
 

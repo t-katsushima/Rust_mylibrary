@@ -1,5 +1,3 @@
-// 未テスト
-
 // mod p で x^n
 fn repeated_squaring(x: usize, n: usize, p: usize) -> usize {
     if n == 0 {

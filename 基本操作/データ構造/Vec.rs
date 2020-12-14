@@ -11,3 +11,7 @@ vec.sort();
 for x in &vec {
     println!("{}", x);
 }
+
+// remove (O(N))
+let index = xs.iter().position(|x| *x == target).unwrap();
+xs.remove(index);
