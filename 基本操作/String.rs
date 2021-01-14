@@ -16,3 +16,9 @@ format!("{}-{}", "hoge", "fuga") // "hoge-fuga"
 let mut t = "fuga";
 t.push_str("piyo");
 t.push('p');
+
+// 文字列Vecの文字列への変換
+vec!["Hello", "World"].join(" ")
+
+let v = vec!['a', 'b', 'c', 'd'];
+let s: String = v.into_iter().collect();
