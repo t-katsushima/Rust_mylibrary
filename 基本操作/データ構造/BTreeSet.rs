@@ -2,5 +2,5 @@
 
 let mut books = BTreeSet::new();
 
-books.insert("The Odyssey");
-books.remove("The Odyssey");
+books.insert("Odyssey");
+books.remove("Odyssey");
