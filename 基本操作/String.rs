@@ -4,6 +4,7 @@ s.chars(); // => Chars(['h', 'o', 'g', 'e'])
 
 // to int
 "42".to_digit(10).unwrap();
+String::from("42").parse::<usize>().unwrap();
 
 // reverse
 s.chars().rev().collect::<String>()
@@ -20,5 +21,6 @@ t.push('p');
 // 文字列Vecの文字列への変換
 vec!["Hello", "World"].join(" ")
 
+// char配列の文字列への変換
 let v = vec!['a', 'b', 'c', 'd'];
 let s: String = v.into_iter().collect();
