@@ -1,7 +1,7 @@
 const H: usize = unimplemented!();
 const W: usize = unimplemented!();
 
-#[derive(Debug, Clone, Copy, PartialEq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 struct Coord {
     x: usize,
     y: usize,
@@ -9,7 +9,6 @@ struct Coord {
 
 #[allow(dead_code)]
 impl Coord {
-
     fn new(p: (usize, usize)) -> Coord {
         Coord { x: p.0, y: p.1 }
     }
@@ -22,13 +21,13 @@ impl Coord {
     }
 
     fn in_field(pos: (isize, isize)) -> bool {
-        (0 <= pos.0 && pos.0 < W as isize) && (0 <= pos.1 && pos.1 < H as isize)
+        (0 <= pos.0 && pos.0 < SIDE as isize) && (0 <= pos.1 && pos.1 < SIDE as isize)
     }
 
+    // ペアへの変換
     fn to_pair(&self) -> (usize, usize) {
         (self.x, self.y)
     }
-
     fn to_isize_pair(&self) -> (isize, isize) {
         (self.x as isize, self.y as isize)
     }
@@ -52,12 +51,19 @@ impl Coord {
             .collect()
     }
 
-    fn access_matrix<T>(self, mat: &Vec<Vec<T>>) -> &T {
+    // 四則演算
+    fn plus(&self, that: &Coord) -> Self {
+        Coord::new((self.x + that.x, self.y + that.y))
+    }
+    fn minus(&self, that: &Coord) -> Self {
+        Coord::new((self.x - that.x, self.y - that.y))
+    }
+
+    fn access_matrix<'a, T>(&'a self, mat: &'a Vec<Vec<T>>) -> &'a T {
         &mat[self.y][self.x]
     }
 
-    fn set_matrix<T: Clone>(self, mat: &mut Vec<Vec<T>>, e: T) {
-        mat[self.y][self.x] = e.clone()
+    fn set_matrix<T>(&self, mat: &mut Vec<Vec<T>>, e: T) {
+        mat[self.y][self.x] = e;
     }
-
 }
