@@ -21,7 +21,7 @@ impl Coord {
     }
 
     fn in_field(pos: (isize, isize)) -> bool {
-        (0 <= pos.0 && pos.0 < SIDE as isize) && (0 <= pos.1 && pos.1 < SIDE as isize)
+        (0 <= pos.0 && pos.0 < W as isize) && (0 <= pos.1 && pos.1 < H as isize)
     }
 
     // ペアへの変換
@@ -39,7 +39,7 @@ impl Coord {
         dist_x + dist_y
     }
 
-    fn mk_4dir(&self) -> Vec<Coord> {
+    fn mk_4dir(&self) -> Vec<Self> {
         let (ix, iy) = self.to_isize_pair();
         let delta = [(-1, 0), (1, 0), (0, -1), (0, 1)];
 

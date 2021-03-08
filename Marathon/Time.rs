@@ -1,7 +1,7 @@
 use std::time::SystemTime;
 
-let start_time = SystemTime::now();
+let system_time = SystemTime::now();
 
 // 副作用挟む操作っぽい
-let ms: u128 = start_time.elapsed().unwrap().as_millis();
-let seconds = start_time.elapsed().unwrap().as_secs_f64();
+let now_ms: u128 = system_time.elapsed().unwrap().as_millis();
+let now_seconds = system_time.elapsed().unwrap().as_secs_f64();
