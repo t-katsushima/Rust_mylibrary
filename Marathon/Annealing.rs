@@ -8,10 +8,9 @@ fn annealing() -> Vec<usize> {
 
     const TL: f64 = 1.95; // 焼きなまし時間(秒)
 
-    let mut rand = rand_pcg::Pcg64Mcg::new(890482);
+    let mut rng = thread_rng();
     let mut state = State::new(&input, t);
 
-    #[allow(non_snake_case)]
     let mut temp;
     // 初期値をセット
     let mut best_score = calc_score(res);
@@ -34,8 +33,8 @@ fn annealing() -> Vec<usize> {
 
             // スコアが悪化して、かつ `e^(score差 / T)` の確率にヒットしなかったら
             // `score差` が負の数なのが肝
-            if old_score > next_score
-                && !rand.gen_bool(f64::exp((next_score - old_score) as f64 / temp))
+            if  next_score < old_score
+                && !rng.gen_bool(f64::exp((next_score - old_score) as f64 / temp))
             {
                 /* 変更の巻き戻し */
             }

@@ -7,6 +7,7 @@ use std::cmp::*;
 #[allow(unused_imports)]
 use std::collections::*;
 
+#[allow(dead_code)]
 const MOD: usize = 1e9 as usize + 7;
 
 #[fastout]
