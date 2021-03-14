@@ -9,11 +9,11 @@ struct Coord {
 
 #[allow(dead_code)]
 impl Coord {
-    fn new(p: (usize, usize)) -> Coord {
+    fn new(p: (usize, usize)) -> Self {
         Coord { x: p.0, y: p.1 }
     }
 
-    fn from_isize_pair(pos: (isize, isize)) -> Coord {
+    fn from_isize_pair(pos: (isize, isize)) -> Self {
         Coord {
             x: pos.0 as usize,
             y: pos.1 as usize,
@@ -33,7 +33,7 @@ impl Coord {
     }
 
     // マンハッタン距離
-    fn distance(&self, that: Coord) -> usize {
+    fn distance(&self, that: &Self) -> usize {
         let dist_x = max(self.x, that.x) - min(self.x, that.x);
         let dist_y = max(self.y, that.y) - min(self.y, that.y);
         dist_x + dist_y
@@ -52,10 +52,10 @@ impl Coord {
     }
 
     // 四則演算
-    fn plus(&self, that: &Coord) -> Self {
+    fn plus(&self, that: &Self) -> Self {
         Coord::new((self.x + that.x, self.y + that.y))
     }
-    fn minus(&self, that: &Coord) -> Self {
+    fn minus(&self, that: &Self) -> Self {
         Coord::new((self.x - that.x, self.y - that.y))
     }
 

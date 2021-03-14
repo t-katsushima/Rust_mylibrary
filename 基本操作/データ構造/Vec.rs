@@ -13,5 +13,7 @@ for x in &vec {
 }
 
 // remove (O(N))
-let index = xs.iter().position(|x| *x == target).unwrap();
-xs.remove(index);
+fn remove_item<T: Eq>(v: &mut Vec<T>, e: &T) {
+    let index = v.iter().position(|elem| *elem == *e).unwrap();
+    v.remove(index);
+}
