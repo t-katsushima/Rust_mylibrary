@@ -1,9 +1,10 @@
 #[allow(unused_imports)]
-use std::collections::*;
-#[allow(unused_imports)]
 use std::cmp::*;
+#[allow(unused_imports)]
+use std::collections::*;
 
 // https://qiita.com/tanakh/items/0ba42c7ca36cd29d0ac8
+#[allow(unused_macros)]
 macro_rules! input {
     (source = $s:expr, $($r:tt)*) => {
         let mut iter = $s.split_whitespace();
@@ -25,6 +26,7 @@ macro_rules! input {
     };
 }
 
+#[allow(unused_macros)]
 macro_rules! input_inner {
     ($next:expr) => {};
     ($next:expr, ) => {};
@@ -35,6 +37,7 @@ macro_rules! input_inner {
     };
 }
 
+#[allow(unused_macros)]
 macro_rules! read_value {
     ($next:expr, ( $($t:tt),* )) => {
         ( $(read_value!($next, $t)),* )
@@ -57,13 +60,16 @@ macro_rules! read_value {
     };
 }
 
+#[allow(dead_code)]
+const MOD: usize = 1e9 as usize + 7;
 
 fn main() {
-    input!{
-        n: usize,
-        v: [i32; n],
+    input! {
+        // n: usize,
+        // v: [isize; n],
     }
 
     let ans = 42;
+
     println!("{}", ans);
 }
