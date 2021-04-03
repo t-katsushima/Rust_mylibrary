@@ -1,5 +1,5 @@
 #[allow(unused_imports)]
-use proconio::marker::Chars;
+use proconio::marker::{Chars, Isize1, Usize1};
 use proconio::{fastout, input};
 
 #[allow(unused_imports)]
