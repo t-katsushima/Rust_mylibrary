@@ -8,3 +8,4 @@ iter.count()
 iter.next()
 iter.enumerate() // <(usize, T)>
 iter.for_each
+iter.fold(init: B, f: F)
