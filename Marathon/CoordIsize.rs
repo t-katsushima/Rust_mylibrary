@@ -30,7 +30,6 @@ impl Coord {
     }
 
     fn mk_4dir(&self) -> Vec<Self> {
-        let (ix, iy) = self.to_pair();
         let delta = [(-1, 0), (1, 0), (0, -1), (0, 1)];
 
         delta
