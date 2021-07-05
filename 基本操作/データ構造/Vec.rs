@@ -17,3 +17,14 @@ fn remove_item<T: Eq>(v: &mut Vec<T>, e: &T) {
     let index = v.iter().position(|elem| *elem == *e).unwrap();
     v.remove(index);
 }
+
+// 分割
+let mut cpus = vec!["sh", "x86", "arm", "mips"];
+let mut later = cpus.split_off(2);
+println!("cpus = {:?}, later = {:?}", cpus, later);
+//cpus = ["sh", "x86"], later = ["arm", "mips"]
+
+// 結合
+cpus.append(&mut later);
+println!("cpus = {:?}, later = {:?}", cpus, later);
+//cpus = ["sh", "x86", "arm", "mips"], later = []

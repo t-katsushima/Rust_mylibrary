@@ -12,6 +12,9 @@ impl Coord {
     fn new(p: (isize, isize)) -> Self {
         Coord { x: p.0, y: p.1 }
     }
+    fn from_usize_pair(p: (usize, usize)) -> Self {
+        Coord { x: p.0 as isize, y: p.1 as isize }
+    }
 
     fn in_field(&self) -> bool {
         (0 <= self.x && self.x < W) && (0 <= self.y && self.y < H)
@@ -24,9 +27,7 @@ impl Coord {
 
     // マンハッタン距離
     fn distance(&self, that: &Self) -> isize {
-        let dist_x = max(self.x, that.x) - min(self.x, that.x);
-        let dist_y = max(self.y, that.y) - min(self.y, that.y);
-        dist_x + dist_y
+        (self.x - that.x).abs() + (self.y - that.y).abs()
     }
 
     fn mk_4dir(&self) -> Vec<Self> {
@@ -37,6 +38,16 @@ impl Coord {
             .map(|&p| self.plus(&Coord::new(p)))
             .filter(|&pos| pos.in_field())
             .collect()
+    }
+
+    fn com_to_delta(com: char) -> Self {
+        match com {
+            'U' => Coord::new((0, -1)),
+            'D' => Coord::new((0, 1)),
+            'L' => Coord::new((-1, 0)),
+            'R' => Coord::new((1, 0)),
+            _ => unreachable!(),
+        }
     }
 
     // 四則演算
