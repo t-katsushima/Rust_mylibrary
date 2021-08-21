@@ -38,7 +38,7 @@ impl BinarySearch {
                 true => min,
                 false => max,
             },
-            _ => match check(mid) {
+            _ => match self.check(mid) {
                 true => self.solve(min, mid),
                 false => self.solve(mid, max),
             },
