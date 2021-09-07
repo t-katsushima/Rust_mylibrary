@@ -13,3 +13,7 @@ heap.len();
 
 use std::cmp::Reverse;
 heap.push(Reverse(1));
+
+// to Vec
+let v = heap.into_vec();
+let v = heap.into_sorted_vec(); // 昇順
