@@ -1,3 +1,5 @@
+// https://qiita.com/hobo0xcc/items/04846eeccb5e2004731a
+
 let s = "hoge";
 
 s.chars(); // => Chars(['h', 'o', 'g', 'e'])
@@ -24,3 +26,7 @@ vec!["Hello", "World"].join(" ")
 // char配列の文字列への変換
 let v = vec!['a', 'b', 'c', 'd'];
 let s: String = v.into_iter().collect();
+
+// 分割
+let v: Vec<&str> = "hello,world,goodbye,world".split(',').collect();
+assert_eq!(v, ["hello", "world", "goodbye", "world"]);
