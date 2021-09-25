@@ -1,16 +1,16 @@
 // cf. https://github.com/tanakh/simulated-annealing/blob/master/src/lib.rs
-// １スレッドへの固定と、コードコメントを書き足した。
 // ステップ数じゃなくて実行時間で終了を制御するように
+// スコアが小さい方が良い
 
 mod sa {
     use rand::prelude::*;
+    use std::time::SystemTime;
 
     #[derive(Clone)]
     pub struct AnnealingOptions {
-        pub steps: usize,    // time_limit に変更 // 焼きなまし実行時間
+        pub time_limit: f64, // 焼きなまし実行時間
         pub limit_temp: f64, // 最低温度？
-        pub restart: usize,
-        pub silent: bool, // デバッグログの表示有無
+        pub silent: bool,    // デバッグログの表示有無
     }
 
     pub trait Annealer {
@@ -21,6 +21,7 @@ mod sa {
         fn init_state(&self, rng: &mut impl Rng) -> Self::State;
         fn start_temp(&self, init_score: f64) -> f64;
 
+        // 強制終了する条件
         fn is_done(&self, _score: f64) -> bool {
             false
         }
@@ -66,26 +67,23 @@ mod sa {
 
         progress!("Initial score: {}", cur_score);
 
-        let mut restart_cnt = 0;
-
         let t_max = annealer.start_temp(cur_score);
         let t_min = opt.limit_temp;
 
-        let step = opt.steps as f64;
-        // 減衰
-        let decay = ((t_min / t_max).ln() / step).exp();
-
-        progress!("Temperature decay: {}", decay);
+        let timer = SystemTime::now();
+        let time_limit = opt.time_limit;
 
         let mut temp = t_max;
-        loop {
-            if temp < t_min {
-                restart_cnt += 1;
-                if restart_cnt >= opt.restart {
+        let mut progress_ratio: f64;
+
+        for i in 0.. {
+            if i % 100 == 0 {
+                progress_ratio = timer.elapsed().unwrap().as_secs_f64() / time_limit;
+                if progress_ratio >= 1.0 {
                     break;
                 }
-                progress!("Restarting... {}/{}", restart_cnt, opt.restart);
-                temp = t_max;
+
+                temp = t_max * (t_min / t_max).powf(progress_ratio);
             }
 
             let mov = annealer.neighbour(&state, &mut rng);
@@ -108,9 +106,8 @@ mod sa {
             } else {
                 annealer.unapply(&mut state, &mov);
             }
-
-            temp *= decay;
         }
+
         (best_score, best_ans)
     }
 }
