@@ -5,14 +5,14 @@
 use std::time::SystemTime;
 
 struct Yamanobori {
-    path: Vec<usize>,
+    path: Vec<usize>, // ノード番号が入る
     score: usize,
-    table: Vec<Vec<usize>>, // 二点間の距離
+    table: Vec<Vec<usize>>, // [aノード番号][bノード番号] := a-b 間の距離
     main_start_time: SystemTime,
 }
 
 impl Yamanobori {
-    fn new(st: &State, start_path: Vec<usize>, table: Vec<Vec<usize>>, main_start_time: SystemTime) -> Yamanobori {
+    fn new(start_path: Vec<usize>, table: Vec<Vec<usize>>, main_start_time: SystemTime) -> Yamanobori {
         let mut score = 0;
         let path_length = start_path.len();
 
@@ -42,7 +42,11 @@ impl Yamanobori {
     }
 
     // end_time: main関数の開始後からの時間を指す
-    fn run(&mut self, end_time: u128) {
+    // 始点終点は固定のはず
+    fn run(
+        &mut self,
+        end_time: u128, // ミリ秒表記
+    ) {
         let mut rand = rand_pcg::Pcg64Mcg::new(890482);
         let path_length = self.path.len();
 

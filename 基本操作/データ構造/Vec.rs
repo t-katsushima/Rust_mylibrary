@@ -32,3 +32,10 @@ println!("cpus = {:?}, later = {:?}", cpus, later);
 cpus.append(&mut later);
 println!("cpus = {:?}, later = {:?}", cpus, later);
 //cpus = ["sh", "x86", "arm", "mips"], later = []
+
+// メモリ割り当て数を指定して空ベクター作成（上手く設定するとメモリ再割り当てにコストを割かずに済む）
+Vec::with_capacity(100)
+
+// スライス作成
+v[..]
+v[1..3]

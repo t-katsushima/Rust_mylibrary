@@ -9,3 +9,4 @@ iter.next()
 iter.enumerate() // <(usize, T)>
 iter.for_each
 iter.fold(init: B, f: F) // F := B -> T -> B
+iter.reduce // Iterator<T> -> (T -> T) -> Option<T> ?

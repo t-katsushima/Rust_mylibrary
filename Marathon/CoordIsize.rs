@@ -1,7 +1,7 @@
 const H: isize = unimplemented!();
 const W: isize = unimplemented!();
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 struct Coord {
     x: isize,
     y: isize,
