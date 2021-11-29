@@ -8,3 +8,6 @@ rng.gen_range(1, 101)
 
 // 乱数固定する場合？
 let mut rng = rand_pcg::Pcg64Mcg::new(890482);
+
+// vector からの要素の乱択
+vec.choose(&mut rng);

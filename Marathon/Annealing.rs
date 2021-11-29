@@ -16,6 +16,8 @@ fn annealing() -> Vec<usize> {
     let mut best_score = calc_score(res);
     let mut best_out = res.clone(); // res がベクターの場合を例とする
 
+    let mut loop_cnt = 0;
+    let loop_times = 100;
     loop {
         let spent_time_rate = get_time(time) / TL; // (0.0, 1.0)
         if spent_time_rate >= 1.0 {
@@ -24,7 +26,7 @@ fn annealing() -> Vec<usize> {
         // 温度。段々下がっていく。
         temp = start_temp + (end_temp - start_temp) * spent_time_rate;
 
-        for _ in 0..100 {
+        for _ in 0..loop_times {
             let old_score = calc_score(res);
 
             /* 変更処理の実行 */
@@ -45,7 +47,10 @@ fn annealing() -> Vec<usize> {
                 best_out = state.t.clone();
             }
         }
+
+        loop_cnt += loop_times;
     }
 
+    eprintln!("loop_cnt: {}", loop_cnt);
     best_out
 }

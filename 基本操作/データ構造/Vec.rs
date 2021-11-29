@@ -17,7 +17,7 @@ fn remove_item<T: Eq>(v: &mut Vec<T>, e: &T) {
     let index = v.iter().position(|elem| *elem == *e).unwrap();
     v.remove(index);
 }
-//remove
+// remove
 let mut vec = vec![1, 2, 3, 4];
 vec.retain(|&x| x % 2 == 0);
 assert_eq!(vec, [2, 4]);

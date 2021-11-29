@@ -47,13 +47,13 @@ impl Yamanobori {
         let system_time = SystemTime::now();
         let start_time = system_time.elapsed().unwrap().as_millis();
 
-        let mut rand = rand_pcg::Pcg64Mcg::new(890482);
+        let mut rng = rand_pcg::Pcg64Mcg::new(890482);
         let path_length = self.path.len();
 
         while system_time.elapsed().unwrap().as_millis() - start_time < during_time {
             for _ in 0..1000 {
-                let mut lci = rand.gen_range(0, path_length); // left cut i
-                let mut rci = rand.gen_range(0, path_length); // right cut i
+                let mut lci = rng.gen_range(0, path_length); // left cut i
+                let mut rci = rng.gen_range(0, path_length); // right cut i
                 if lci > rci {
                     // swap
                     lci ^= rci;
