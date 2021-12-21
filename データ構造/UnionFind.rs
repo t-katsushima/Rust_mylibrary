@@ -1,4 +1,4 @@
-// 1-based-index
+// 0-based-index
 struct UnionFind {
     uni: Vec<isize>, // 根であれば *そのグループの要素数(負)* が、子であれば親の番号が入る。
 }
@@ -7,7 +7,7 @@ struct UnionFind {
 impl UnionFind {
     fn new(n: usize) -> Self {
         UnionFind {
-            uni: vec![-1; n + 1],
+            uni: vec![-1; n],
         }
     }
 

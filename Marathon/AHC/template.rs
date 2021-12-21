@@ -20,10 +20,13 @@ use std::time::SystemTime;
 #[allow(dead_code)]
 const MOD: usize = 1e9 as usize + 7;
 
+struct Input {}
+impl Input {}
+
 #[fastout]
 fn main() {
     let system_time = SystemTime::now();
-    let mut rng = thread_rng();
+    let mut _rng = thread_rng();
 
     input! {
         // n: usize,
