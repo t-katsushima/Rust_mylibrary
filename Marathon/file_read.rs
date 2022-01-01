@@ -10,5 +10,13 @@ fn read_file(file_path: String) -> Input {
     let mut contents = String::new();
     buf_reader.read_to_string(&mut contents);
 
-    // contents をパースして、入力を作れ
+    // TODO: contents をパースして、入力を作れ
+    let v = contents.split("\n").collect::<Vec<_>>();
+
+    // let p = v[i]
+    //         .split(" ")
+    //         .collect::<Vec<_>>()
+    //         .iter()
+    //         .map(|e| e.parse::<usize>().unwrap())
+    //         .collect::<Vec<_>>();
 }

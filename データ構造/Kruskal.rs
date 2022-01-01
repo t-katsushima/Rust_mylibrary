@@ -7,8 +7,8 @@ mod kruskal {
 
     // MSTを成すエッジ列を返す
     pub fn calc(
-        n: usize,                           // ノード数
-        edges: &Vec<(usize, usize, usize)>, // (cost, s, t): s-t を繋ぐエッジとそのcost
+        n: usize,                             // ノード数
+        edges: &Vec<(usize, (usize, usize))>, // (cost, s, t): s-t を繋ぐエッジとそのcost
     ) -> Vec<(usize, usize)> {
         let mut uf = UnionFind::new(n);
         let mut res: Vec<(usize, usize)> = Vec::with_capacity(n - 1);
@@ -20,7 +20,7 @@ mod kruskal {
         }
 
         while !pq.is_empty() {
-            let Reverse((_, s, t)) = pq.pop().unwrap();
+            let Reverse((_, (s, t))) = pq.pop().unwrap();
             if !uf.is_connect(s, t) {
                 uf.connect(s, t);
                 res.push((s, t));
