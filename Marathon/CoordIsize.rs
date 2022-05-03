@@ -1,5 +1,5 @@
-const H: isize = unimplemented!();
-const W: isize = unimplemented!();
+const H: usize = unimplemented!();
+const W: usize = unimplemented!();
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 struct Coord {
@@ -17,7 +17,7 @@ impl Coord {
     }
 
     fn in_field(&self) -> bool {
-        (0 <= self.x && self.x < W) && (0 <= self.y && self.y < H)
+        (0 <= self.x && self.x < W as isize) && (0 <= self.y && self.y < H as isize)
     }
 
     // ペアへの変換

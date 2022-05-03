@@ -1,5 +1,10 @@
 // f64 sort
 // cf. https://uma0317.github.io/rust-cookbook-ja/algorithms/sorting.html#floatのベクタをソートする
+let mut vec = vec![1.1, 1.15, 5.5, 1.123, 2.0];
+
+vec.sort_by(|a, b| a.partial_cmp(b).unwrap());
+
+assert_eq!(vec, vec![1.1, 1.123, 1.15, 2.0, 5.5]);
 
 
 // f64 heap
