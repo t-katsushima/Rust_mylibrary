@@ -3,14 +3,14 @@ struct Rectangle {
     leftup: Coord,
     rightdown: Coord,
 }
-
+#[allow(dead_code)]
 impl Rectangle {
     fn new(leftup: Coord, rightdown: Coord) -> Self {
         Rectangle { leftup, rightdown }
     }
 
     fn calc_area(&self) -> isize {
-        (self.rightdown.x - self.leftup.x) * (self.rightdown.y - self.leftup.y)
+        (self.rightdown.x - self.leftup.x + 1) * (self.rightdown.y - self.leftup.y + 1)
     }
 
     fn in_field(&self) -> bool {
