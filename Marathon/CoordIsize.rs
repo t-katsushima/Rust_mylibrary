@@ -2,35 +2,38 @@ const H: usize = unimplemented!();
 const W: usize = unimplemented!();
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
-struct Coord {
-    x: isize,
-    y: isize,
+pub struct Coord {
+    pub x: isize,
+    pub y: isize,
 }
 
 #[allow(dead_code)]
 impl Coord {
-    fn new(p: (isize, isize)) -> Self {
+    pub fn new(p: (isize, isize)) -> Self {
         Coord { x: p.0, y: p.1 }
     }
-    fn from_usize_pair(p: (usize, usize)) -> Self {
-        Coord { x: p.0 as isize, y: p.1 as isize }
+    pub fn from_usize_pair(p: (usize, usize)) -> Self {
+        Coord {
+            x: p.0 as isize,
+            y: p.1 as isize,
+        }
     }
 
-    fn in_field(&self) -> bool {
+    pub fn in_field(&self) -> bool {
         (0 <= self.x && self.x < W as isize) && (0 <= self.y && self.y < H as isize)
     }
 
     // ペアへの変換
-    fn to_pair(&self) -> (isize, isize) {
+    pub fn to_pair(&self) -> (isize, isize) {
         (self.x, self.y)
     }
 
     // マンハッタン距離
-    fn distance(&self, that: &Self) -> isize {
+    pub fn distance(&self, that: &Self) -> isize {
         (self.x - that.x).abs() + (self.y - that.y).abs()
     }
 
-    fn mk_4dir(&self) -> Vec<Self> {
+    pub fn mk_4dir(&self) -> Vec<Self> {
         let delta = [(-1, 0), (1, 0), (0, -1), (0, 1)];
 
         delta
@@ -40,7 +43,7 @@ impl Coord {
             .collect()
     }
 
-    fn com_to_delta(com: char) -> Self {
+    pub fn com_to_delta(com: char) -> Self {
         match com {
             'U' => Coord::new((0, -1)),
             'D' => Coord::new((0, 1)),
@@ -51,18 +54,18 @@ impl Coord {
     }
 
     // 四則演算
-    fn plus(&self, that: &Self) -> Self {
+    pub fn plus(&self, that: &Self) -> Self {
         Coord::new((self.x + that.x, self.y + that.y))
     }
-    fn minus(&self, that: &Self) -> Self {
+    pub fn minus(&self, that: &Self) -> Self {
         Coord::new((self.x - that.x, self.y - that.y))
     }
 
-    fn access_matrix<'a, T>(&'a self, mat: &'a Vec<Vec<T>>) -> &'a T {
+    pub fn access_matrix<'a, T>(&'a self, mat: &'a Vec<Vec<T>>) -> &'a T {
         &mat[self.y as usize][self.x as usize]
     }
 
-    fn set_matrix<T>(&self, mat: &mut Vec<Vec<T>>, e: T) {
+    pub fn set_matrix<T>(&self, mat: &mut Vec<Vec<T>>, e: T) {
         mat[self.y as usize][self.x as usize] = e;
     }
 }
