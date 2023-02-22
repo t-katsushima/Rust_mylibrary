@@ -1,12 +1,12 @@
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
-enum Direction {
+pub enum Direction {
     Left,
     Right,
     Up,
     Down,
 }
 impl Direction {
-    fn to_delta(&self) -> Coord {
+    pub fn to_delta(&self) -> Coord {
         match *self {
             Self::Left => Coord::new((-1, 0)),
             Self::Right => Coord::new((1, 0)),

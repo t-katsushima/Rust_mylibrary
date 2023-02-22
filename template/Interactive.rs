@@ -13,6 +13,7 @@ impl<R: std::io::Read, W: std::io::Write> IO<R, W> {
         IO(r, std::io::BufWriter::new(w))
     }
     pub fn write<S: ToString>(&mut self, s: S) {
+        #[allow(unused_imports)]
         use std::io::Write;
         self.1.write(s.to_string().as_bytes()).unwrap();
     }

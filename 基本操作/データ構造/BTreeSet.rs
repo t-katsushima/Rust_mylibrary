@@ -9,3 +9,6 @@ books.contains("Odyssey"); // => true
 
 // to Vec
 books.into_iter().collect::<Vec<_>>();
+
+// from
+let set = BTreeSet::from([1, 2, 3]);

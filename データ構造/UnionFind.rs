@@ -1,4 +1,5 @@
 // 0-based-index
+#[derive(Debug, Clone)]
 struct UnionFind {
     uni: Vec<isize>, // 根であれば *そのグループの要素数(負)* が、子であれば親の番号が入る。
 }
@@ -6,9 +7,7 @@ struct UnionFind {
 #[allow(dead_code)]
 impl UnionFind {
     fn new(n: usize) -> Self {
-        UnionFind {
-            uni: vec![-1; n],
-        }
+        UnionFind { uni: vec![-1; n] }
     }
 
     // 頂点 v の所属するグループを調べる
