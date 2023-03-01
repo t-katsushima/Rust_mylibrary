@@ -9,6 +9,12 @@ impl Rectangle {
         Rectangle { leftup, rightdown }
     }
 
+    fn from_diagonal_point(pos1: Coord, pos2: Coord) -> Self {
+        let leftup = Coord::new((pos1.x.min(pos2.x), pos1.y.min(pos2.y)));
+        let rightdown = Coord::new((pos1.x.max(pos2.x), pos1.y.max(pos2.y)));
+        Self { leftup, rightdown }
+    }
+
     fn calc_area(&self) -> isize {
         (self.rightdown.x - self.leftup.x + 1) * (self.rightdown.y - self.leftup.y + 1)
     }

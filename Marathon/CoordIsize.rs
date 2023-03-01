@@ -69,3 +69,11 @@ impl Coord {
         mat[self.y as usize][self.x as usize] = e;
     }
 }
+
+// println!("{}") での表示内容
+impl std::fmt::Display for Coord {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        writeln!(f, "({}, {})", self.x, self.y)?;
+        Ok(())
+    }
+}

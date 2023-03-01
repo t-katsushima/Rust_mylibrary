@@ -1,7 +1,7 @@
 const INPUT_NUM: usize = unimplemented!();
 
 fn main() {
-    let input_path = "/YOUR_INPUT_PATH".to_string();
+    let input_path = "/YOUR_INPUT_DIR_PATH".to_string();
 
     let mut inputs = vec![];
     for i in 0..INPUT_NUM {
@@ -9,7 +9,7 @@ fn main() {
         inputs.push(read_file(file_path));
     }
 
-    // inputs内の要素に対して処理を書く
+    todo!("inputs内の要素に対して処理を書く")
 }
 
 #[allow(dead_code, unused)]
@@ -20,9 +20,8 @@ fn read_file(file_path: String) -> Input {
 
     let file = File::open(file_path).unwrap();
     let mut buf_reader = BufReader::new(file);
-    // ここにファイル内容を書き込む
-    let mut contents = String::new();
+    let mut contents = String::new(); // ファイル内容を格納
     buf_reader.read_to_string(&mut contents);
 
-    // contents をパースして、入力を作れ
+    todo!("contents をパースして、入力を作れ")
 }
