@@ -35,10 +35,11 @@ fn annealing() -> Vec<usize> {
 
             // スコアが悪化して、かつ `e^(score差 / T)` の確率にヒットしなかったら
             // `score差` が負の数なのが肝
-            if  next_score < old_score
+            if next_score < old_score
                 && !rng.gen_bool(f64::exp((next_score - old_score) as f64 / temp))
             {
                 /* 変更の巻き戻し */
+                // std::mem::swap(a, b);
             }
 
             if state.score > best_score {

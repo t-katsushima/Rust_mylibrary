@@ -56,6 +56,7 @@ impl Yamanobori {
                 let mut rci = rng.gen_range(0, path_length); // right cut i
                 if lci > rci {
                     // swap
+                    // TODO: std::mem::swap()
                     lci ^= rci;
                     rci ^= lci;
                     lci ^= rci;
