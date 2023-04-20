@@ -73,7 +73,14 @@ impl Coord {
 // println!("{}") での表示内容
 impl std::fmt::Display for Coord {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        writeln!(f, "({}, {})", self.x, self.y)?;
+        write!(f, "({}, {})", self.x, self.y)?;
+        Ok(())
+    }
+}
+// println!("{:?}") での表示内容
+impl std::fmt::Debug for Coord {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "({}, {})", self.x, self.y)?;
         Ok(())
     }
 }

@@ -11,6 +11,16 @@ mod ext_vec {
             }
         }
     }
+
+    pub trait ExtVecOrd<T: Ord> {
+        fn sort_desc(&mut self);
+    }
+    impl<T: Ord> ExtVecOrd<T> for Vec<T> {
+        fn sort_desc(&mut self) {
+            self.sort_by(|a, b| b.cmp(a));
+        }
+    }
+
     pub trait ExtVecDisplay<T: core::fmt::Display> {
         fn joining(&self, sep: &str) -> String;
     }
