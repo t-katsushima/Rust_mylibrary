@@ -1,19 +1,45 @@
+#[allow(unused)]
 pub mod MCTS {
 
-    use crate::State;
+    #[derive(Debug, Clone)]
+    pub enum WinningStatus {
+        Win,
+        Lose,
+        Draw,
+    }
+
+    #[derive(Debug, Clone)]
+    pub enum Action {
+        // TODO
+    }
+
+    pub trait State {
+        fn legal_actions(&self) -> Vec<Action>;
+
+        fn is_done(&self) -> bool;
+
+        fn get_winning_status(&self) -> WinningStatus;
+
+        // 指定したactionでゲームを1ターン進め、次のプレイヤー視点の盤面にする
+        fn advance(&mut self, action: &Action);
+    }
+
+    pub fn playout<S: State + Clone>(state: &S) -> f64 {
+        todo!()
+    }
 
     const C: f64 = 1.0; // UCB1の計算に使う定数
     const EXPAND_THRESHOLD: usize = 10; // ノードを展開する閾値
 
     #[derive(Debug, Clone)]
-    pub struct Node {
-        state: State, // 盤面の状態(たぶん)
-        w: f64,       // 累計価値
-        pub child_nodes: Vec<Node>,
+    pub struct Node<S: State + Clone> {
+        state: S, // 盤面の状態
+        w: f64,   // 累計価値
+        pub child_nodes: Vec<Self>,
         pub n: usize, // 試行回数
     }
-    impl Node {
-        fn new(state: State) -> Self {
+    impl<S: State + Clone> Node<S> {
+        fn new(state: S) -> Self {
             Self {
                 state,
                 w: 0.0,
@@ -69,61 +95,61 @@ pub mod MCTS {
         }
 
         // ノードを展開する
-        fn expand(&self) {
-            let legal_actions = self.state.legalActions();
+        fn expand(&mut self) {
+            let legal_actions = self.state.legal_actions();
             self.child_nodes.clear();
             for action in legal_actions {
-                self.child_nodes.push(self.clone());
-                // State.advance: 指定したactionでゲームを1ターン進め、次のプレイヤー視点の盤面にする
-                self.child_nodes.last().unwrap().state.advance(action);
+                let mut next_node = self.clone();
+                next_node.state.advance(&action);
+                self.child_nodes.push(next_node);
             }
         }
 
         // どのノードを評価するか選択する
-        fn next_child_node(&self) -> Self {
+        fn next_childnode(&self) -> Self {
             // 未試行の子ノードがあったら再優先で実行
-            for child_node in self.child_nodes {
+            for child_node in &self.child_nodes {
                 if child_node.n == 0 {
-                    return child_node;
+                    return child_node.clone();
                 }
             }
 
             let mut t = 0.0;
-            for child_node in self.child_nodes {
+            for child_node in &self.child_nodes {
                 t += child_node.n as f64;
             }
 
-            let best_value = std::f64::MIN;
-            let best_action_index = !0;
+            let mut best_value = std::f64::MIN;
+            let mut best_action_index = !0;
             for i in 0..self.child_nodes.len() {
                 let child_node = &self.child_nodes[i];
                 // TODO: 一人ゲームの場合反転しないように書き換える
                 let ucb1_value = 1.0 - child_node.w / child_node.n as f64
-                    + C as f64 * (2.0 * num::Float::ln(t) / child_node.n as f64).sqrt();
+                    + C as f64 * (2.0 * t.ln() / child_node.n as f64).sqrt();
                 if ucb1_value > best_value {
                     best_action_index = i;
                     best_value = ucb1_value;
                 }
             }
 
-            self.child_nodes[best_action_index]
+            self.child_nodes[best_action_index].clone()
         }
     }
 
     // プレイアウト数を指定してMCTSで行動を決定する
-    fn mcts_action(state: State, playout_num: usize) -> usize {
-        let root_node = Node::new(state);
+    fn mcts_action<S: State + Clone>(state: &S, playout_num: usize) -> Action {
+        let mut root_node = Node::new(state.clone());
 
         // 所定回数プレイアウトを実行
         root_node.expand();
-        for i in 0..playout_num {
+        for _ in 0..playout_num {
             root_node.evaluate();
         }
 
         // 一番良さそうな手(viz.試行された手)を選ぶ
         let legal_actions = state.legal_actions();
         let mut best_action_searched_number: isize = -1;
-        let best_action_index: usize = !0;
+        let mut best_action_index: usize = !0;
         assert!(legal_actions.len() == root_node.child_nodes.len());
         for i in 0..legal_actions.len() {
             let n = root_node.child_nodes[i].n;
@@ -133,6 +159,6 @@ pub mod MCTS {
             }
         }
 
-        legal_actions[best_action_index]
+        legal_actions[best_action_index].clone()
     }
 }

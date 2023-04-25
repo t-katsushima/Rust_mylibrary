@@ -1,4 +1,5 @@
 use rand::{thread_rng, Rng};
+use rand::prelude::SliceRandom;
 
 let mut rng = thread_rng();
 
