@@ -27,6 +27,9 @@ impl Coord {
     pub fn to_pair(&self) -> (isize, isize) {
         (self.x, self.y)
     }
+    pub fn to_usize_pair(&self) -> (usize, usize) {
+        (self.x as usize, self.y as usize)
+    }
 
     // マンハッタン距離
     pub fn distance(&self, that: &Self) -> isize {

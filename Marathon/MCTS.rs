@@ -8,24 +8,19 @@ pub mod MCTS {
         Draw,
     }
 
-    #[derive(Debug, Clone)]
-    pub enum Action {
-        // TODO
-    }
-
     pub trait State {
-        fn legal_actions(&self) -> Vec<Action>;
+        type Action: Clone;
+
+        fn legal_actions(&self) -> Vec<Self::Action>;
 
         fn is_done(&self) -> bool;
 
         fn get_winning_status(&self) -> WinningStatus;
 
         // 指定したactionでゲームを1ターン進め、次のプレイヤー視点の盤面にする
-        fn advance(&mut self, action: &Action);
-    }
+        fn advance(&mut self, action: &Self::Action);
 
-    pub fn playout<S: State + Clone>(state: &S) -> f64 {
-        todo!()
+        fn playout(&self) -> f64;
     }
 
     const C: f64 = 1.0; // UCB1の計算に使う定数
@@ -69,7 +64,7 @@ pub mod MCTS {
             // プレイアウト結果を累計価値に足し、累計価値を返す。試行回数が閾値を超えたら子ノードを展開する。
             if self.child_nodes.is_empty() {
                 let state_copy = self.state.clone();
-                let value = playout(&state_copy);
+                let value = state_copy.playout();
 
                 self.w += value;
                 self.n += 1;
@@ -137,7 +132,7 @@ pub mod MCTS {
     }
 
     // プレイアウト数を指定してMCTSで行動を決定する
-    fn mcts_action<S: State + Clone>(state: &S, playout_num: usize) -> Action {
+    fn mcts_action<S: State + Clone>(state: &S, playout_num: usize) -> S::Action {
         let mut root_node = Node::new(state.clone());
 
         // 所定回数プレイアウトを実行
