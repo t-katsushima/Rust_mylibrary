@@ -1,11 +1,22 @@
 #[allow(unused)]
 pub mod MCTS {
+    use std::time::SystemTime;
 
     #[derive(Debug, Clone)]
     pub enum WinningStatus {
         Win,
         Lose,
         Draw,
+    }
+    impl WinningStatus {
+        pub fn to_f64(&self) -> f64 {
+            use WinningStatus::*;
+            match self {
+                Win => 1.0,
+                Draw => 0.5,
+                Lose => 0.0,
+            }
+        }
     }
 
     pub trait State {
@@ -20,7 +31,7 @@ pub mod MCTS {
         // 指定したactionでゲームを1ターン進め、次のプレイヤー視点の盤面にする
         fn advance(&mut self, action: &Self::Action);
 
-        fn playout(&self) -> f64;
+        fn playout(self) -> f64;
     }
 
     const C: f64 = 1.0; // UCB1の計算に使う定数
@@ -63,8 +74,7 @@ pub mod MCTS {
             // 子ノードが存在しない時
             // プレイアウト結果を累計価値に足し、累計価値を返す。試行回数が閾値を超えたら子ノードを展開する。
             if self.child_nodes.is_empty() {
-                let state_copy = self.state.clone();
-                let value = state_copy.playout();
+                let value = self.state.clone().playout();
 
                 self.w += value;
                 self.n += 1;
@@ -132,14 +142,21 @@ pub mod MCTS {
     }
 
     // プレイアウト数を指定してMCTSで行動を決定する
-    fn mcts_action<S: State + Clone>(state: &S, playout_num: usize) -> S::Action {
+    pub fn mcts_action<S: State + Clone>(
+        state: &S,
+        end_time: u128,
+        system_time: &SystemTime,
+    ) -> S::Action {
         let mut root_node = Node::new(state.clone());
 
         // 所定回数プレイアウトを実行
         root_node.expand();
-        for _ in 0..playout_num {
+        let mut playout_num = 0;
+        while system_time.elapsed().unwrap().as_millis() < end_time {
+            playout_num += 1;
             root_node.evaluate();
         }
+        eprintln!("playout num: {}", playout_num);
 
         // 一番良さそうな手(viz.試行された手)を選ぶ
         let legal_actions = state.legal_actions();
