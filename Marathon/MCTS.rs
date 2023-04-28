@@ -76,9 +76,10 @@ pub mod MCTS {
             // 子ノードが存在する時
             // 子ノードの評価を累計価値に足し、累計価値を返す。
             if !self.child_nodes.is_empty() {
+                let idx = self.next_childnode_idx();
                 // 二人対戦ゲームの場合、プレイヤー視点が逆のため、以下のように評価値を反転する
                 // TODO: 一人ゲームの場合反転しないように書き換える
-                let value = 1.0 - self.next_childnode().evaluate();
+                let value = 1.0 - self.child_nodes[idx].evaluate();
 
                 self.w += value;
                 self.n += 1;
@@ -114,11 +115,12 @@ pub mod MCTS {
         }
 
         // どのノードを評価するか選択する
-        fn next_childnode(&self) -> Self {
+        fn next_childnode_idx(&self) -> usize {
             // 未試行の子ノードがあったら再優先で実行
-            for child_node in &self.child_nodes {
+            for i in 0..self.child_nodes.len() {
+                let child_node = &self.child_nodes[i];
                 if child_node.n == 0 {
-                    return child_node.clone();
+                    return i;
                 }
             }
 
@@ -138,7 +140,21 @@ pub mod MCTS {
                 }
             }
 
-            self.child_nodes[best_action_index].clone()
+            best_action_index
+        }
+
+        fn print_tree(&self, depth: usize) {
+            for i in 0..self.child_nodes.len() {
+                let child_node = &self.child_nodes[i];
+                for j in 0..depth {
+                    eprint!("__");
+                }
+                eprintln!(" {}({})", i, child_node.n);
+
+                if !child_node.child_nodes.is_empty() {
+                    child_node.print_tree(depth + 1);
+                }
+            }
         }
     }
 
@@ -159,6 +175,7 @@ pub mod MCTS {
         }
         eprintln!("playout num: {}", playout_num);
         eprintln!("w: {:.2}", root_node.w / root_node.n as f64 * 100.0);
+        root_node.print_tree(1);
 
         // 一番良さそうな手(viz. 試行された手)を選ぶ
         let legal_actions = state.legal_actions();
