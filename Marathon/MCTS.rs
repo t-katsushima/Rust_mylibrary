@@ -55,26 +55,39 @@ pub mod MCTS {
             }
         }
 
+        // UCB1で選択して、プレイアウトして、結果を親ノードまで伝搬させる
         pub fn evaluate(&mut self) -> f64 {
             // ゲーム終了時
             if self.state.is_done() {
                 // 勝敗に応じた評価を累計価値に足し、累計価値を返す。
-                // TODO: サンプル実装なので、問題に応じて置き換える
+                // TODO: 勝敗がつくタイプのゲームの実装になっている
                 let value = match self.state.get_winning_status() {
                     WinningStatus::Win => 1.0,
                     WinningStatus::Lose => 0.0,
                     WinningStatus::Draw => 0.5,
                 };
 
-                self.w = value;
+                self.w += value;
                 self.n += 1;
 
                 return value;
             }
 
+            // 子ノードが存在する時
+            // 子ノードの評価を累計価値に足し、累計価値を返す。
+            if !self.child_nodes.is_empty() {
+                // 二人対戦ゲームの場合、プレイヤー視点が逆のため、以下のように評価値を反転する
+                // TODO: 一人ゲームの場合反転しないように書き換える
+                let value = 1.0 - self.next_childnode().evaluate();
+
+                self.w += value;
+                self.n += 1;
+
+                return value;
+            }
             // 子ノードが存在しない時
             // プレイアウト結果を累計価値に足し、累計価値を返す。試行回数が閾値を超えたら子ノードを展開する。
-            if self.child_nodes.is_empty() {
+            else {
                 let value = self.state.clone().playout();
 
                 self.w += value;
@@ -83,18 +96,6 @@ pub mod MCTS {
                 if self.n == EXPAND_THRESHOLD {
                     self.expand();
                 }
-
-                return value;
-            }
-            // 子ノードが存在する時
-            // 子ノードの評価を累計価値に足し、累計価値を返す。
-            else {
-                // 二人対戦ゲームの場合、プレイヤー視点が逆のため、以下のように評価値を反転する
-                // TODO: 一人ゲームの場合反転しないように書き換える
-                let value = 1.0 - self.next_childnode().evaluate();
-
-                self.w += value;
-                self.n += 1;
 
                 return value;
             }
@@ -121,17 +122,15 @@ pub mod MCTS {
                 }
             }
 
-            let mut t = 0.0;
-            for child_node in &self.child_nodes {
-                t += child_node.n as f64;
-            }
+            // 子ノードの試行回数の総数
+            let t = self.child_nodes.iter().map(|node| node.n).sum::<usize>() as f64;
 
             let mut best_value = std::f64::MIN;
             let mut best_action_index = !0;
             for i in 0..self.child_nodes.len() {
                 let child_node = &self.child_nodes[i];
                 // TODO: 一人ゲームの場合反転しないように書き換える
-                let ucb1_value = 1.0 - child_node.w / child_node.n as f64
+                let ucb1_value = (1.0 - child_node.w / child_node.n as f64)
                     + C as f64 * (2.0 * t.ln() / child_node.n as f64).sqrt();
                 if ucb1_value > best_value {
                     best_action_index = i;
@@ -159,15 +158,16 @@ pub mod MCTS {
             root_node.evaluate();
         }
         eprintln!("playout num: {}", playout_num);
+        eprintln!("w: {:.2}", root_node.w / root_node.n as f64 * 100.0);
 
-        // 一番良さそうな手(viz.試行された手)を選ぶ
+        // 一番良さそうな手(viz. 試行された手)を選ぶ
         let legal_actions = state.legal_actions();
-        let mut best_action_searched_number: isize = -1;
         let mut best_action_index: usize = !0;
+        let mut best_action_searched_number: isize = -1;
         assert!(legal_actions.len() == root_node.child_nodes.len());
         for i in 0..legal_actions.len() {
-            let n = root_node.child_nodes[i].n;
-            if n as isize > best_action_searched_number {
+            let n = root_node.child_nodes[i].n as isize;
+            if n > best_action_searched_number {
                 best_action_index = i;
                 best_action_searched_number = n as isize;
             }
