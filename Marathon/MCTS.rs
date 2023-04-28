@@ -1,5 +1,6 @@
 #[allow(unused)]
 pub mod MCTS {
+    use std::fmt::Debug;
     use std::time::SystemTime;
 
     #[derive(Debug, Clone)]
@@ -20,7 +21,7 @@ pub mod MCTS {
     }
 
     pub trait State {
-        type Action: Clone;
+        type Action: Clone + Debug;
 
         fn legal_actions(&self) -> Vec<Self::Action>;
 
@@ -102,9 +103,10 @@ pub mod MCTS {
         // ノードを展開する
         fn expand(&mut self) {
             let legal_actions = self.state.legal_actions();
-            self.child_nodes.clear();
+            self.child_nodes.clear(); // TODO: 要らない気がする
+            let parent = self.clone();
             for action in legal_actions {
-                let mut next_node = self.clone();
+                let mut next_node = parent.clone();
                 next_node.state.advance(&action);
                 self.child_nodes.push(next_node);
             }
