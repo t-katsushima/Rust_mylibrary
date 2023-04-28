@@ -55,21 +55,19 @@ pub mod MCTS {
             }
         }
 
+        fn add_value(&mut self, value: f64) {
+            self.w += value;
+            self.n += 1;
+        }
+
         // UCB1で選択して、プレイアウトして、結果を親ノードまで伝搬させる
         pub fn evaluate(&mut self) -> f64 {
             // ゲーム終了時
             if self.state.is_done() {
                 // 勝敗に応じた評価を累計価値に足し、累計価値を返す。
                 // TODO: 勝敗がつくタイプのゲームの実装になっている
-                let value = match self.state.get_winning_status() {
-                    WinningStatus::Win => 1.0,
-                    WinningStatus::Lose => 0.0,
-                    WinningStatus::Draw => 0.5,
-                };
-
-                self.w += value;
-                self.n += 1;
-
+                let value = self.state.get_winning_status().to_f64();
+                self.add_value(value);
                 return value;
             }
 
@@ -80,19 +78,14 @@ pub mod MCTS {
                 // 二人対戦ゲームの場合、プレイヤー視点が逆のため、以下のように評価値を反転する
                 // TODO: 一人ゲームの場合反転しないように書き換える
                 let value = 1.0 - self.child_nodes[idx].evaluate();
-
-                self.w += value;
-                self.n += 1;
-
+                self.add_value(value);
                 return value;
             }
             // 子ノードが存在しない時
             // プレイアウト結果を累計価値に足し、累計価値を返す。試行回数が閾値を超えたら子ノードを展開する。
             else {
                 let value = self.state.clone().playout();
-
-                self.w += value;
-                self.n += 1;
+                self.add_value(value);
 
                 if self.n == EXPAND_THRESHOLD {
                     self.expand();
