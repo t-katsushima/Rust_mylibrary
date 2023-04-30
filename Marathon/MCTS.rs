@@ -1,7 +1,12 @@
 #[allow(unused)]
 pub mod MCTS {
+    use rand::prelude::StdRng;
+    use rand::rngs::ThreadRng;
+    use rand::thread_rng;
     use std::fmt::Debug;
     use std::time::SystemTime;
+
+    const SEED: [u8; 32] = [42; 32];
 
     #[derive(Debug, Clone)]
     pub enum WinningStatus {
@@ -32,7 +37,7 @@ pub mod MCTS {
         // 指定したactionでゲームを1ターン進め、次のプレイヤー視点の盤面にする
         fn advance(&mut self, action: &Self::Action);
 
-        fn playout(self) -> f64;
+        fn playout(self, rng: &mut StdRng) -> f64;
     }
 
     const C: f64 = 1.0; // UCB1の計算に使う定数
@@ -61,7 +66,7 @@ pub mod MCTS {
         }
 
         // UCB1で選択して、プレイアウトして、結果を親ノードまで伝搬させる
-        pub fn evaluate(&mut self) -> f64 {
+        pub fn evaluate(&mut self, rng: &mut StdRng) -> f64 {
             // ゲーム終了時
             if self.state.is_done() {
                 // 勝敗に応じた評価を累計価値に足し、累計価値を返す。
@@ -77,14 +82,14 @@ pub mod MCTS {
                 let idx = self.next_childnode_idx();
                 // 二人対戦ゲームの場合、プレイヤー視点が逆のため、以下のように評価値を反転する
                 // TODO: 一人ゲームの場合反転しないように書き換える
-                let value = 1.0 - self.child_nodes[idx].evaluate();
+                let value = 1.0 - self.child_nodes[idx].evaluate(rng);
                 self.add_value(value);
                 return value;
             }
             // 子ノードが存在しない時
             // プレイアウト結果を累計価値に足し、累計価値を返す。試行回数が閾値を超えたら子ノードを展開する。
             else {
-                let value = self.state.clone().playout();
+                let value = self.state.clone().playout(rng);
                 self.add_value(value);
 
                 if self.n == EXPAND_THRESHOLD {
@@ -157,6 +162,8 @@ pub mod MCTS {
         end_time: u128,
         system_time: &SystemTime,
     ) -> S::Action {
+        let mut rng: StdRng = rand::SeedableRng::from_seed(SEED);
+
         let mut root_node = Node::new(state.clone());
 
         // 所定回数プレイアウトを実行
@@ -164,11 +171,11 @@ pub mod MCTS {
         let mut playout_num = 0;
         while system_time.elapsed().unwrap().as_millis() < end_time {
             playout_num += 1;
-            root_node.evaluate();
+            root_node.evaluate(&mut rng);
         }
         eprintln!("playout num: {}", playout_num);
         eprintln!("w: {:.2}", root_node.w / root_node.n as f64 * 100.0);
-        root_node.print_tree(1);
+        // root_node.print_tree(1);
 
         // 一番良さそうな手(viz. 試行された手)を選ぶ
         let legal_actions = state.legal_actions();
