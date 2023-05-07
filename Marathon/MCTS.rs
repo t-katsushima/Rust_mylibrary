@@ -103,10 +103,8 @@ pub mod MCTS {
         // ノードを展開する
         fn expand(&mut self) {
             let legal_actions = self.state.legal_actions();
-            self.child_nodes.clear(); // TODO: 要らない気がする
-            let parent = self.clone();
             for action in legal_actions {
-                let mut next_node = parent.clone();
+                let mut next_node = Node::new(self.state.clone());
                 next_node.state.advance(&action);
                 self.child_nodes.push(next_node);
             }
@@ -174,7 +172,6 @@ pub mod MCTS {
             root_node.evaluate(&mut rng);
         }
         eprintln!("playout num: {}", playout_num);
-        eprintln!("w: {:.2}", root_node.w / root_node.n as f64 * 100.0);
         // root_node.print_tree(1);
 
         // 一番良さそうな手(viz. 試行された手)を選ぶ
@@ -189,6 +186,11 @@ pub mod MCTS {
                 best_action_searched_number = n as isize;
             }
         }
+
+        let rate = 1.0
+            - root_node.child_nodes[best_action_index].w
+                / root_node.child_nodes[best_action_index].n as f64;
+        eprintln!("w: {:.2}", rate * 100.0);
 
         legal_actions[best_action_index].clone()
     }
