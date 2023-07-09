@@ -27,8 +27,8 @@ fn dijkstra(n: usize, edge: &Vec<Vec<(usize, usize)>>, from: usize, to: usize) -
         // その頂点からたどり着ける頂点の情報を更新する
         for &(next_node, cost) in &edge[now_node] {
             let next_dist = dist[now_node] + cost;
+            // 既存の通路より近いなら更新
             if next_dist < dist[next_node] {
-                // 既存の通路より近いなら更新
                 dist[next_node] = next_dist;
                 heap.push(Reverse((next_dist, next_node)));
             }
