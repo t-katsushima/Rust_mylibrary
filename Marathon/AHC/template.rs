@@ -47,9 +47,6 @@ where
     }
 }
 
-#[allow(dead_code)]
-const MOD: usize = 1e9 as usize + 7;
-
 struct Input {}
 impl Input {}
 
