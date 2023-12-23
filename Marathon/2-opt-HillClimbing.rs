@@ -4,9 +4,9 @@ use std::time::SystemTime;
 
 #[allow(dead_code)]
 struct Yamanobori {
-    path: Vec<usize>, // ノード番号が入る。ノード番号は、tableのindexとも対応する。
-    score: usize,
+    path: Vec<usize>,       // ノード番号が入る。ノード番号は、tableのindexとも対応する。
     table: Vec<Vec<usize>>, // [aノード番号][bノード番号] := a-b 間の距離
+    score: usize,
 }
 #[allow(dead_code)]
 impl Yamanobori {
@@ -21,8 +21,8 @@ impl Yamanobori {
 
         Yamanobori {
             path: start_path,
-            score,
             table,
+            score,
         }
     }
 
@@ -52,25 +52,24 @@ impl Yamanobori {
 
         while system_time.elapsed().unwrap().as_millis() - start_time < during_time {
             for _ in 0..1000 {
-                let mut lci = rng.gen_range(0, path_length); // left cut i
-                let mut rci = rng.gen_range(0, path_length); // right cut i
+                let mut lci = rng.gen_range(0..path_length); // left cut i
+                let mut rci = rng.gen_range(0..path_length); // right cut i
                 if lci > rci {
-                    // swap
-                    // TODO: std::mem::swap()
-                    lci ^= rci;
-                    rci ^= lci;
-                    lci ^= rci;
+                    swap(&mut lci, &mut rci);
                 }
 
+                // 同一点だったり、始点終点が含まれてたらやり直し
                 if lci == rci || (lci == 0 || rci == path_length - 1) {
                     continue;
                 }
 
+                // 差分箇所のスコア計算
                 let pre = self.access_table_by_path_id(lci - 1, lci)
                     + self.access_table_by_path_id(rci, rci + 1);
                 let next = self.access_table_by_path_id(lci - 1, rci)
                     + self.access_table_by_path_id(lci, rci + 1);
 
+                // ベストの更新
                 if next < pre {
                     self.score += next;
                     self.score -= pre;
