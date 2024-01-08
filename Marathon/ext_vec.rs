@@ -1,5 +1,6 @@
 mod ext_vec {
     pub trait ExtVec<T: Clone> {
+        // Vec::first で良さそう
         fn head_option(&self) -> Option<T>;
     }
     impl<T: Clone> ExtVec<T> for Vec<T> {

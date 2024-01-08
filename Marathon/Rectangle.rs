@@ -1,4 +1,4 @@
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Clone, Copy, PartialEq, Eq)]
 pub struct Rectangle {
     pub leftup: Coord,
     pub rightdown: Coord,
@@ -35,5 +35,25 @@ impl Rectangle {
         let in_x_overwrapped = self.leftup.x < that.rightdown.x && self.rightdown.x > that.leftup.x;
         let in_y_overwrapped = self.leftup.y < that.rightdown.y && self.rightdown.y > that.leftup.y;
         in_x_overwrapped && in_y_overwrapped
+    }
+}
+impl std::fmt::Display for Rectangle {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "Rect{{x: {}-{}, y: {}-{}}}",
+            self.leftup.x, self.rightdown.x, self.leftup.y, self.rightdown.y
+        )?;
+        Ok(())
+    }
+}
+impl std::fmt::Debug for Rectangle {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "Rect{{x: {}-{}, y: {}-{}}}",
+            self.leftup.x, self.rightdown.x, self.leftup.y, self.rightdown.y
+        )?;
+        Ok(())
     }
 }
