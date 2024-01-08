@@ -10,10 +10,10 @@ pub struct Coord {
 #[allow(dead_code)]
 impl Coord {
     pub fn new(p: (isize, isize)) -> Self {
-        Coord { x: p.0, y: p.1 }
+        Self { x: p.0, y: p.1 }
     }
     pub fn from_usize_pair(p: (usize, usize)) -> Self {
-        Coord {
+        Self {
             x: p.0 as isize,
             y: p.1 as isize,
         }
@@ -58,10 +58,10 @@ impl Coord {
 
     // 四則演算
     pub fn plus(&self, that: &Self) -> Self {
-        Coord::new((self.x + that.x, self.y + that.y))
+        Self::new((self.x + that.x, self.y + that.y))
     }
     pub fn minus(&self, that: &Self) -> Self {
-        Coord::new((self.x - that.x, self.y - that.y))
+        Self::new((self.x - that.x, self.y - that.y))
     }
 
     pub fn access_matrix<'a, T>(&'a self, mat: &'a Vec<Vec<T>>) -> &'a T {
