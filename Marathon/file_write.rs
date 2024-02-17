@@ -1,4 +1,4 @@
-fn file_write(file_path: String, contents: String) {
+fn write_file(file_path: String, contents: String) {
     use std::fs;
     use std::io::Write;
 
