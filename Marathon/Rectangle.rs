@@ -26,12 +26,20 @@ impl Rectangle {
             && self.rightdown.y < SIDE as isize
     }
 
+    pub fn move_to(&self, vector: &Coord) -> Self {
+        Self {
+            leftup: self.leftup.plus(vector),
+            rightdown: self.rightdown.plus(vector),
+        }
+    }
+
     pub fn does_include_point(&self, point: &Coord) -> bool {
         let &Coord { x, y } = point;
         self.leftup.x <= x && x <= self.rightdown.x && self.leftup.y <= y && y <= self.rightdown.y
     }
 
-    pub fn does_include_rect(&self, that: &Rectangle) -> bool {
+    // thatと一部でも重なってるならtrue。ただし、辺が重なってるだけならfalse。
+    pub fn does_overlap_rect(&self, that: &Rectangle) -> bool {
         let in_x_overwrapped = self.leftup.x < that.rightdown.x && self.rightdown.x > that.leftup.x;
         let in_y_overwrapped = self.leftup.y < that.rightdown.y && self.rightdown.y > that.leftup.y;
         in_x_overwrapped && in_y_overwrapped
