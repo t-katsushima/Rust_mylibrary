@@ -31,7 +31,7 @@ impl Coord {
         (self.x as usize, self.y as usize)
     }
 
-    // マンハッタン距離
+    /// マンハッタン距離
     pub fn distance(&self, that: &Self) -> isize {
         (self.x - that.x).abs() + (self.y - that.y).abs()
     }

@@ -154,7 +154,7 @@ pub mod MCTS {
         }
     }
 
-    // プレイアウト数を指定してMCTSで行動を決定する
+    /// プレイアウト数を指定してMCTSで行動を決定する
     pub fn mcts_action<S: State + Clone>(
         state: &S,
         end_time: u128,
