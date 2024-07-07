@@ -23,7 +23,7 @@ pub mod dinic {
         pub g: Vec<Vec<Edge>>, // グラフの隣接リスト表現
     }
     impl G {
-        // g: 隣接リスト。(node_id, cap)
+        /// g: 隣接リスト。(node_id, cap)
         fn new(g0: Vec<Vec<(usize, usize)>>) -> G {
             let mut g = G {
                 g: vec![vec![]; g0.len()],
@@ -37,7 +37,7 @@ pub mod dinic {
             g
         }
 
-        // fromからtoへ向かう容量capの辺をグラフに追加する
+        /// fromからtoへ向かう容量capの辺をグラフに追加する
         fn add_edge(&mut self, from: usize, to: usize, cap: usize) {
             let to_len = self.g[to].len();
             let from_len = self.g[from].len();
@@ -55,13 +55,13 @@ pub mod dinic {
         pub g: G,
     }
     impl Solver {
-        // g: 隣接リスト。(node_id, cap)
+        /// g: 隣接リスト。(node_id, cap)
         pub fn new(n: usize, g: Vec<Vec<(usize, usize)>>) -> Solver {
             Solver { n, g: G::new(g) }
         }
 
-        // sからの最短距離をBFSで計算する(capに空きがある辺のみ使用できる)
-        // return: sからの距離の配列
+        /// sからの最短距離をBFSで計算する(capに空きがある辺のみ使用できる)
+        /// return: sからの距離の配列
         fn bfs(&self, s: usize) -> Vec<usize> {
             let mut level = vec![!0; self.n];
             let mut q = std::collections::VecDeque::new();
@@ -80,7 +80,7 @@ pub mod dinic {
             return level;
         }
 
-        // 増加パスをDFSで探す
+        /// 増加パスをDFSで探す
         fn dfs(
             &mut self,
             node: usize,           // 現在のノード
@@ -115,7 +115,7 @@ pub mod dinic {
             return 0;
         }
 
-        // sからtへの最大流を求める
+        /// sからtへの最大流を求める
         pub fn max_flow(&mut self, s: usize, t: usize) -> usize {
             let mut flow = 0;
             loop {

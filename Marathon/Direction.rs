@@ -1,11 +1,18 @@
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+#[allow(unused)]
 pub enum Direction {
     Left,
     Right,
     Up,
     Down,
 }
+#[allow(unused)]
 impl Direction {
+    pub fn list() -> Vec<Self> {
+        use Direction::*;
+        vec![Left, Right, Up, Down]
+    }
+
     pub fn to_delta(&self) -> Coord {
         match *self {
             Self::Left => Coord::new((-1, 0)),
