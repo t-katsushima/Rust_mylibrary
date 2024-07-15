@@ -1,4 +1,6 @@
+// 最大流問題を解くアルゴリズム
 // O(|E||V|^2)
+
 pub mod dinic {
     #[derive(Clone)]
     pub struct Edge {

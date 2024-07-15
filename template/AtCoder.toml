@@ -1,7 +1,0 @@
-[package]
-name = "AtCoder"
-version = "0.1.0"
-edition = "2018"
-
-[dependencies]
-proconio = { version = "=0.3.6", features = ["derive"] }
