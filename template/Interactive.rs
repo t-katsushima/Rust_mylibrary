@@ -1,9 +1,14 @@
+/*
+    use proconio::input_interactive;
+    できるならこっち使えばいい
+*/
+
 fn main() {
     let (r, w) = (std::io::stdin(), std::io::stdout());
     let mut sc = IO::new(r.lock(), w.lock());
 
     let t: usize = sc.read();
-    let v = (0..n).map(|_| sc.read::<i64>()).collect::<Vec<_>>();
+    let v = (0..n).map(|_| sc.read::<i64>()).collect_vec();
 }
 
 pub struct IO<R, W: std::io::Write>(R, std::io::BufWriter<W>);

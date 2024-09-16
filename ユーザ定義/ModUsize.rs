@@ -7,6 +7,7 @@ struct ModUsize {
     p: usize,
 }
 
+#[allow(dead_code)]
 impl ModUsize {
     fn new(n: usize, p: usize) -> Self {
         Self { n: n % p, p }
@@ -45,10 +46,16 @@ impl Mul<usize> for ModUsize {
         self.multi(rhs)
     }
 }
-
 impl AddAssign<usize> for ModUsize {
     fn add_assign(&mut self, rhs: usize) {
         self.n += rhs % self.p;
+        self.n %= self.p;
+    }
+}
+impl SubAssign<usize> for ModUsize {
+    fn sub_assign(&mut self, rhs: usize) {
+        self.n += self.p;
+        self.n -= rhs % self.p;
         self.n %= self.p;
     }
 }
