@@ -64,15 +64,14 @@ impl Coord {
         Self::new((self.x - that.x, self.y - that.y))
     }
 
+    // getter/setter
     pub fn access_matrix<'a, T>(&'a self, mat: &'a Vec<Vec<T>>) -> &'a T {
         &mat[self.y as usize][self.x as usize]
     }
-
     pub fn set_matrix<T>(&self, mat: &mut Vec<Vec<T>>, e: T) {
         mat[self.y as usize][self.x as usize] = e;
     }
 }
-
 // println!("{}") での表示内容
 impl std::fmt::Display for Coord {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
