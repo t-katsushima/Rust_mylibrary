@@ -32,8 +32,9 @@ impl Coord {
     }
 
     /// マンハッタン距離
-    pub fn distance(&self, that: &Self) -> isize {
-        (self.x - that.x).abs() + (self.y - that.y).abs()
+    pub fn distance(&self, that: &Self) -> usize {
+        let dist = (self.x - that.x).abs() + (self.y - that.y).abs();
+        dist as usize
     }
 
     pub fn mk_4dir(&self) -> Vec<Self> {
