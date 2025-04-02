@@ -38,7 +38,7 @@ impl Rectangle {
         self.leftup.x <= x && x <= self.rightdown.x && self.leftup.y <= y && y <= self.rightdown.y
     }
 
-    // thatと一部でも重なってるならtrue。ただし、辺が重なってるだけならfalse。
+    /// thatと一部でも重なってるならtrue。ただし、辺が重なってるだけならfalse。
     pub fn does_overlap_rect(&self, that: &Rectangle) -> bool {
         let in_x_overwrapped = self.leftup.x < that.rightdown.x && self.rightdown.x > that.leftup.x;
         let in_y_overwrapped = self.leftup.y < that.rightdown.y && self.rightdown.y > that.leftup.y;
