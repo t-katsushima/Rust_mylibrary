@@ -1,12 +1,12 @@
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
-#[allow(unused)]
+#[allow(dead_code)]
 pub enum Direction {
     Left,
     Right,
     Up,
     Down,
 }
-#[allow(unused)]
+#[allow(dead_code)]
 impl Direction {
     pub fn list() -> Vec<Self> {
         use Direction::*;
