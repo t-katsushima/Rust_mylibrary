@@ -6,7 +6,7 @@ fn annealing() -> Vec<usize> {
     // 終了温度(終盤に悪化遷移を35%程度許容できる値にすると良さそう)
     let end_temp: f64 = 600.0;
 
-    const TL: f64 = 1.95; // 焼きなまし時間(秒)
+    const TL: f64 = 1950.0; // 焼きなまし時間(ミリ秒)
 
     let mut rng = thread_rng();
     let mut state = State::new(&input, t);
@@ -19,7 +19,7 @@ fn annealing() -> Vec<usize> {
     let mut loop_cnt = 0;
     let loop_times = 100;
     loop {
-        let spent_time_rate = get_time(time) / TL; // (0.0, 1.0)
+        let spent_time_rate = system_time.elapsed().unwrap().as_millis() as f64 / TL; // (0.0, 1.0)
         if spent_time_rate >= 1.0 {
             break;
         }
